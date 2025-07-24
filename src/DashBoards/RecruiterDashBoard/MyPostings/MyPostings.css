@@ -1,0 +1,14 @@
+.mypostings{
+    padding:'30px';
+    /* display:'grid';
+    grid-template-columns:'auto auto auto '; */
+    justify-content:"space-around" ;
+    gap:'20px'
+}
+.box{
+  background: linear-gradient(to right,lightseagreen, #2ecc71);
+  height: 28vh;
+  border:'1px solid black';
+  padding:'10px';
+  margin-bottom:'10px'
+}

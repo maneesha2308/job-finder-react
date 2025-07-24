@@ -1,0 +1,40 @@
+.navbar {
+    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* This automatically separates left and right sections */
+  padding: 16px;
+  background: linear-gradient(to right,lightseagreen, #2ecc71);
+  /* background-color: lightseagreen; */
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.nav_right {
+    
+    margin: auto;
+    display: flex;
+     /* gap: 40px; */
+}
+
+
+button{
+    font-size: 1 rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    /* border:'1px solid white'; */
+    /* border-radius:'8px'; */
+    /* padding:'5px'; */
+    /* color:'lightseagreen' */
+}
+button:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

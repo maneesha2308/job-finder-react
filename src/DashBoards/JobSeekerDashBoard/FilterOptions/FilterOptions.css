@@ -1,0 +1,25 @@
+.fil_options{
+    /* background-color: lightseagreen; */
+  background: linear-gradient(to right,lightseagreen, #2ecc71); /* Example background */
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 90vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.fil_options>span{
+    border: 2px solid white;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+.fil_options>span:hover{
+    border: 2px solid white;
+    padding: 5px;
+    border-radius: 5px;
+    background-color:gray;
+    cursor: pointer;
+}

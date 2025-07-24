@@ -1,0 +1,12 @@
+.sidebar_links{
+    display:flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+    font-size: larger;
+}
+.sidebar_links>span:hover{
+   background-color:goldenrod;
+   color:green;
+}

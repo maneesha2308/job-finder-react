@@ -1,0 +1,22 @@
+.signUpForm{
+    width: 100%;
+    height: 100%;
+    padding: 3rem;
+
+}
+#form{
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    border: 1px solid lightseagreen;
+
+    /* background-color: lightseagreen; */
+    background: linear-gradient(to right,lightseagreen, #2ecc71);
+    padding: 0.5rem;
+    border-radius: 10px 45px;
+}
+button{
+    padding: 5px;
+    color: lightseagreen;
+    font-family: 'Times New Roman', Times, serif;
+    border: 1px solid lightseagreen;
+}

@@ -1,0 +1,45 @@
+#home {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right,lightseagreen, #2ecc71);
+
+  padding: 0 20px;
+}
+
+.hero-content {
+  text-align: center;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  /* color: #1f2937; */
+  color:lightseagreen;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: lightseagreen;
+}
+
+.explore-btn {
+  padding: 12px 24px;
+  border-radius: 999px;
+  background-color:lightseagreen;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.explore-btn:hover {
+  background-color: lightseagreen;
+}

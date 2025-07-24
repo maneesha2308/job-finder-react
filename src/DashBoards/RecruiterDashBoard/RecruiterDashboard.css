@@ -1,0 +1,13 @@
+.recruiter_dashboard{
+    display: flex;
+    gap: 20px;
+}
+.sidebar{
+    /* background-color:lightseagreen; */
+  background: linear-gradient(to right,lightseagreen, #2ecc71); /* Example background */
+
+    height: 90vh;
+    padding: 2rem;
+    width: 25%;
+
+}

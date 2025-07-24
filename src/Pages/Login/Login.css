@@ -1,0 +1,13 @@
+ .login{
+    width: 100%;
+    padding: 3rem;
+}
+
+#form{
+    border: 1px solid lightseagreen;
+    /* background-color: lightseagreen; */
+    background: linear-gradient(to right,lightseagreen, #2ecc71); 
+
+    padding: 0.5rem;
+    border-radius: 5px;
+}
