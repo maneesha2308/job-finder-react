@@ -13,6 +13,7 @@ import SavedJobs from './DashBoards/JobSeekerDashBoard/SavedJobs/SavedJobs'
 import DisplayJobs from './DashBoards/JobSeekerDashBoard/DisplayJobs/DisplayJobs'
 import { useState } from 'react'
 const App = () => {
+
   const [params, setParams] = useState("")
   return (
     <div>
@@ -40,6 +41,7 @@ const App = () => {
 
 
         <Route path='displayJobs' element={<DisplayJobs />} />
+
 
       </Routes>
 

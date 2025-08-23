@@ -1,209 +1,163 @@
+import React, { useState } from "react";
+import "./DisplayJobs.css";
 
+const DisplayJobs = () => {
+  const jobsData = [
+    { id: 1, title: "Frontend Developer", company: "Infosys", location: "Hyderabad", type: "Remote" },
+    { id: 2, title: "Backend Developer", company: "TCS", location: "Bengaluru", type: "Onsite" },
+    { id: 3, title: "Full Stack Engineer", company: "Accenture", location: "Hyderabad", type: "Hybrid" },
+    { id: 4, title: "Data Analyst", company: "Deloitte", location: "Pune", type: "Remote" },
+    { id: 5, title: "UI/UX Designer", company: "Wipro", location: "Chennai", type: "Onsite" },
+    { id: 6, title: "Cloud Engineer", company: "Amazon AWS", location: "Hyderabad", type: "Hybrid" },
+    { id: 7, title: "Machine Learning Engineer", company: "Google", location: "Bengaluru", type: "Remote" },
+    { id: 8, title: "Cybersecurity Analyst", company: "Capgemini", location: "Noida", type: "Onsite" },
+    { id: 9, title: "DevOps Engineer", company: "Microsoft", location: "Hyderabad", type: "Hybrid" },
+    { id: 10, title: "Database Administrator", company: "Oracle", location: "Mumbai", type: "Onsite" },
+    { id: 11, title: "Software Engineer", company: "Tech Mahindra", location: "Pune", type: "Remote" },
+    { id: 12, title: "AI Research Intern", company: "Adobe", location: "Bengaluru", type: "Hybrid" },
+    { id: 13, title: "Business Analyst", company: "Cognizant", location: "Hyderabad", type: "Onsite" },
+    { id: 14, title: "System Administrator", company: "HCL", location: "Chennai", type: "Onsite" },
+    { id: 15, title: "QA Tester", company: "Mindtree", location: "Bengaluru", type: "Remote" },
+    { id: 16, title: "Network Engineer", company: "Cisco", location: "Gurgaon", type: "Hybrid" },
+    { id: 17, title: "Product Manager", company: "Flipkart", location: "Bengaluru", type: "Onsite" },
+    { id: 18, title: "Data Scientist", company: "IBM", location: "Hyderabad", type: "Remote" },
+    { id: 19, title: "Mobile App Developer", company: "Paytm", location: "Noida", type: "Onsite" },
+    { id: 20, title: "Blockchain Developer", company: "Polygon", location: "Mumbai", type: "Hybrid" },
+    { id: 21, title: "Game Developer", company: "Ubisoft", location: "Pune", type: "Onsite" },
+    { id: 22, title: "AR/VR Engineer", company: "Meta", location: "Bengaluru", type: "Remote" },
+    { id: 23, title: "Technical Support Engineer", company: "Zoho", location: "Chennai", type: "Onsite" },
+    { id: 24, title: "Site Reliability Engineer", company: "Netflix", location: "Hyderabad", type: "Hybrid" },
+  ];
 
-import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { getDocs, collection, updateDoc, arrayUnion, doc, getDoc } from 'firebase/firestore'
-import { db } from '../../../ConfigFireBase/config'
-import { Modal, Form, Button } from 'react-bootstrap'
+  // Search + filter states
+  const [search, setSearch] = useState("");
+  const [location, setLocation] = useState("");
+  const [jobType, setJobType] = useState("");
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 6;
 
+  // Filter jobs first
+  const filteredJobs = jobsData.filter((job) => {
+    return (
+      job.title.toLowerCase().includes(search.toLowerCase()) &&
+      (location ? job.location === location : true) &&
+      (jobType ? job.type === jobType : true)
+    );
+  });
 
-const DisplayJobs = ({ selectJobRole }) => {
-  const [resumeLink, setResumeLink] = useState("")
-  const [selectedJob, setSelectedJob] = useState(null)
+  // Pagination logic
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
 
-  const navigate = useNavigate()
-
-  const loggedinjobSeeker = JSON.parse(localStorage.getItem("loggedInJobSeeker"))
-  console.log(selectJobRole)
-  const [allJobs, setAllJobs] = useState([]);
-  const [openModal, setOpenModal] = useState(false)
-  const [loadingJobs, setLoadingJobs,] = useState([true])
-  const [filDataOnJobRole, setFilDataOnJobRole] = useState([])
-  console.log("alljobs", allJobs);
-  useEffect(() => {
-    const fetchingJobs = async () => {
-      try {
-        const recCollectionRef = collection(db, "recruiters");
-
-        const allDocs = await getDocs(recCollectionRef);
-
-        let jobsFromDocs = []
-        // console.log(allDocs.docs,"allDocs")
-        allDocs.docs.map((doc) => {
-          let individualDocJobs = doc.data().jobs
-          console.log(individualDocJobs, "imndividualDocJobs")
-          individualDocJobs.map((singleJob) => {
-            jobsFromDocs.push(singleJob)
-          })
-          console.log(jobsFromDocs, "jobsFromDocs")
-          // jobsFromDocs.push(doc.data().jobs)
-
-          // console.log(doc.data().jobs,"doc")
-          setAllJobs(jobsFromDocs)
-          setFilDataOnJobRole(jobsFromDocs)
-          setLoadingJobs(false)
-        })
-      }
-      catch (err) {
-        console.log(err);
-      }
-    };
-    fetchingJobs();
-  }, [])
-  useEffect(() => {
-    let roleBasedFilData = allJobs.filter((job) => job.jobRole === selectJobRole)
-    setFilDataOnJobRole(roleBasedFilData)
-    console.log(roleBasedFilData)
-  }, [selectJobRole])
-
-  if (loadingJobs) {
-    return <><p>loading jobs....wait a moment</p></>
-  }
-
-  const handleSavedJob = async (savedJob) => {
-    console.log(savedJob, "saved jobs")
-    try {
-      let job_seeker_ref_doc = doc(db, "job_seekers", loggedinjobSeeker.user.displayName)
-      // console.log(job_seeker_ref_doc,"job_seeker_ref_doc")
-
-      let job_seekerDataDoc = await getDoc(job_seeker_ref_doc)
-      console.log(job_seekerDataDoc)
-
-      await updateDoc(job_seeker_ref_doc, {
-        savedJobs: arrayUnion(savedJob)
-      })
-      alert("job saved succesfully")
-
-
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const handleApplyJob = async (appliedJob) => {
-
-    console.log(appliedJob, "applied jobs")
-    try {
-      let job_seeker_ref_doc = doc(db, "job_seekers", loggedinjobSeeker.user.displayName)
-      // console.log(job_seeker_ref_doc,"job_seeker_ref_doc")
-
-      let job_seekerDataDoc = await getDoc(job_seeker_ref_doc)
-      console.log(job_seekerDataDoc)
-
-      await updateDoc(job_seeker_ref_doc, {
-        appliedJobs: arrayUnion(appliedJob)
-      });
-      alert("job applied succesfully")
-
-      //recruiters code
-
-      const allRecDocs = await getDocs(collection(db, "recruiters"))
-      // console.log(allRecDocs,"allRecDocs")
-      allRecDocs.forEach((singleRecDoc) => {
-        let jobs=singleRecDoc.data().jobs;
-        // console.log(singleRecDoc.data().jobs,"singleRecDoc")
-
-        const matchedJobIndex = singleRecDoc.data().jobs.find((job) =>
-          job.company === appliedJob.company &&
-          job.jobRole === appliedJob.jobRole);
-
-          console.log(matchedJobIndex,"matchedJob", singleRecDoc.data().name)
-          if(matchedJobIndex !==-1){
-              jobs[matchedJobIndex].applications =[]
-          }
-
-          const recEmail=loggedinjobSeeker.user.email;
-          jobs[matchedJobIndex].applications.push({recEmail,resumeLink})
-
-        // console.log(matchedJob, "matchedJob")
-        // console.log(singleRecDoc.data().name, "recName")
-
-        const matchedRecruiter = doc
-          (db, "recruiters", singleRecDoc.data().name);
-        updateDoc(matchedRecruiter, {
-          jobs:jobs
-        });
-
-        alert("successfully job applied")
-      });
-
-    } catch (err) {
-      console.log(err)
-    }
-  };
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
   return (
-    <div>
-      {filDataOnJobRole.length > 0 ? (
-        <>
-          {filDataOnJobRole.map((job) => {
-            return (
-              <div style={{ border: "1px solid black", marginBottom: "10px" }}>
-                <p>{job.jobRole}</p>
-                <span>{job.company}</span>
-                <div style={{width:'300px',height:'40px'}}>
-                  <button onClick={() => 
-                    handleSavedJob(job)} style={{backgroundColor: 'lightseagreen' }}>Save</button>
-                  <button onClick={() => {
-                    setOpenModal(true)
-                    setSelectedJob(job)
-                  }} style={{ backgroundColor: 'lightseagreen' }}>Apply</button>
+    <div className="container mt-3">
+      <h2 className="text-center mb-4 fw-bold">Available Jobs</h2>
+
+      <div className="row">
+        {/* Filters Section */}
+        <div className="col-md-3 mb-4">
+          <div className="filter-card p-3 shadow-sm rounded">
+            <h5 className="fw-semibold mb-3">Filter Jobs</h5>
+
+            <input
+              type="text"
+              placeholder="Search by Title"
+              className="form-control mb-3"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1); // reset to page 1
+              }}
+            />
+
+            <select
+              className="form-select mb-3"
+              value={location}
+              onChange={(e) => {
+                setLocation(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="">All Locations</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Bengaluru">Bengaluru</option>
+              <option value="Pune">Pune</option>
+              <option value="Chennai">Chennai</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Noida">Noida</option>
+              <option value="Gurgaon">Gurgaon</option>
+            </select>
+
+            <select
+              className="form-select mb-3"
+              value={jobType}
+              onChange={(e) => {
+                setJobType(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="">All Types</option>
+              <option value="Remote">Remote</option>
+              <option value="Onsite">Onsite</option>
+              <option value="Hybrid">Hybrid</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Jobs Section */}
+        <div className="col-md-9">
+          {currentJobs.length > 0 ? (
+            <div className="row">
+              {currentJobs.map((job) => (
+                <div key={job.id} className="col-md-4 mb-4">
+                  <div className="card job-card shadow-sm h-100 p-3">
+                    <div>
+                      <h5 className="fw-bold">{job.title}</h5>
+                      <p className="mb-1"><strong>🏢 {job.company}</strong></p>
+                      <p className="mb-1 text-muted">📍 {job.location}</p>
+                      <span className="badge-job">{job.type}</span>
+                    </div>
+                    <div className="mt-3 text-end">
+                      <button className="btn btn-sm btn-apply">Apply</button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </>
-      ) : (
-        "no jobs found"
-      )}
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted">No jobs found</p>
+          )}
 
-      {openModal &&
-        <Modal show={openModal} onHide={() => setOpenModal(false)} >
-          <Modal.Header closeButton>
-            <Modal.Title>Postjob</Modal.Title>
-          </Modal.Header>
 
-          <Modal.Body>
-            <Form style={{ maxWidth: '500', margin: 'auto' }} id='form'>
-
-              <Form.Group className='mb-3'>
-                <Form.Label>Email:---</Form.Label>
-                <Form.Control
-                  required
-                  type='email'
-                  value={loggedinjobSeeker.user.email}
-                  readOnly
-                  placeholder='email here'
-                />
-              </Form.Group>
-
-              <Form.Group className='mb-3'>
-                <Form.Label>Resume link:--</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  onChange={(e) => setResumeLink(e.target.value)}
-                  placeholder='resume link here'
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-
-          <Modal.Footer>
-
-            <Button variant='primary' onClick={() => {
-              handleApplyJob(selectedJob)
-              setOpenModal(false)
-            }}>
-              Apply
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      }
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <nav>
+            <ul className="pagination justify-content-center">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <li
+                  key={i}
+                  className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => setCurrentPage(i + 1)}
+                  >
+                    {i + 1}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </div>
     </div>
+    </div >
   );
 };
 
-
-export default DisplayJobs
+export default DisplayJobs;

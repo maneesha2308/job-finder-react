@@ -25,8 +25,7 @@ const MyPostings = () => {
         setJobs(data.jobs||[])
         setLoading(false)
       }
-
-      }
+    }
       fetchingData()
     },[])
 

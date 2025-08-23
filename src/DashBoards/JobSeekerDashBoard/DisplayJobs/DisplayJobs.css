@@ -1,0 +1,43 @@
+/* Filters panel */
+.filter-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+/* Job cards */
+.job-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 5px solid lightseagreen /* blue highlight */
+}
+
+.job-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Apply button */
+.job-card button {
+  border-radius: 20px;
+  padding: 6px 16px;
+}
+.btn-apply {
+  background-color: #20B2AA !important; /* LightSeaGreen */
+  border-color: #20B2AA !important;
+  color: white !important;
+  border-radius: 20px;
+  padding: 6px 16px;
+  transition: 0.2s ease;
+}
+
+.btn-apply:hover {
+  background-color: #1a8f87 !important; /* darker shade on hover */
+  border-color: #1a8f87 !important;
+}
+/* Common style for all badges */
+.badge-job {
+  background-color: #20B2AA !important;  /* LightSeaGreen */
+  color: #fff !important;
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 12px;
+}
