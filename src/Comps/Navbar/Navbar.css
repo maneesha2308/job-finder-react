@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: space-between;  /* This automatically separates left and right sections */
   padding: 16px;
-  background: linear-gradient(to right,lightseagreen, #2ecc71);
+  background: linear-gradient(to right,lightseagreen, #2ecc71)!important;
   /* background-color: lightseagreen; */
 }
 
@@ -23,7 +23,7 @@
 
 
 button{
-    font-size: 1 rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
