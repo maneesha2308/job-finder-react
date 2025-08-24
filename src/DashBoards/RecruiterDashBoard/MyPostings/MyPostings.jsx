@@ -1,5 +1,5 @@
 import React from 'react'
-import './mypostings.css'
+import "./MyPostings.css"
 import { db } from '../../../ConfigFireBase/config'
 import { doc,getDoc, updateDoc } from 'firebase/firestore'
 import {useEffect,useState} from 'react'
